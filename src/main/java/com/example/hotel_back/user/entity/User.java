@@ -1,5 +1,6 @@
 package com.example.hotel_back.user.entity;
 
+import com.example.hotel_back.user.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +30,7 @@ public class User {
    @Column(length = 20, nullable = false, unique = true)
    private String email;
 
-   @Column(length = 30, nullable = false)
+   @Column(length = 60, nullable = false)
    private String password;
 
    @Column(length = 20, nullable = false)
@@ -48,5 +49,9 @@ public class User {
    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    @JoinColumn(name = "profile_photo_id", unique = true)
    private ProfilePhoto profilePhoto;
+
+   @Enumerated(EnumType.STRING)
+   @Builder.Default
+   private Role role = Role.USER;
 
 }
