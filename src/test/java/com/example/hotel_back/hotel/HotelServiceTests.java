@@ -2,7 +2,7 @@ package com.example.hotel_back.hotel;
 
 import com.example.hotel_back.hotel.entity.Hotel;
 import com.example.hotel_back.hotel.repository.HotelRepository;
-import com.example.hotel_back.util.RandomNumberUtil;
+import com.example.hotel_back.common.util.RandomNumberUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

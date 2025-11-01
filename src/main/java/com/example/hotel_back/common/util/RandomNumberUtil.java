@@ -1,4 +1,4 @@
-package com.example.hotel_back.util;
+package com.example.hotel_back.common.util;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -14,6 +14,11 @@ public class RandomNumberUtil {
         long number = ThreadLocalRandom.current()
                 .nextLong(100000000000000L, 1000000000000000L); // 15-digit range
         return String.valueOf(number);
+    }
+
+    public static int get랜덤인증번호() {
+        int 랜덤인증번호 = ThreadLocalRandom.current().nextInt(1000, 9999);
+        return 랜덤인증번호;
     }
 
 }
