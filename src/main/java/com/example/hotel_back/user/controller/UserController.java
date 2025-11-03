@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
@@ -19,8 +21,9 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/sendEmail")
-    public Boolean sendEmail(@RequestBody String email) {
-        return userService.sendVerificationCode(email);
+    public Boolean sendEmail(@RequestBody Map<String, String> emailMap) {
+
+        return userService.sendVerificationCode(emailMap.get("email"));
     }
 
     @PostMapping("/verifyEmail")
