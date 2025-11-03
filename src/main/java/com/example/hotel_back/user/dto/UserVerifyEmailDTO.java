@@ -14,7 +14,6 @@ public class UserVerifyEmailDTO {
     @Email(message = "이메일 패턴이 아닙니다")
     private String email;
 
-    @NotBlank
     @Size(max = 4, min = 4)
     private String verificationCode;
 
