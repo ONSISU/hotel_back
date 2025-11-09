@@ -1,5 +1,6 @@
 package com.example.hotel_back.common.exception;
 
+import com.example.hotel_back.common.exception.hotel.NoWithinMarkerRange;
 import com.example.hotel_back.common.exception.user.DuplicationUserException;
 import com.example.hotel_back.common.exception.user.FailVerifiedEmailException;
 import com.example.hotel_back.common.exception.user.NoSuchMemberException;
@@ -48,5 +49,12 @@ public class GlobalExceptionHandler{
         return ResponseEntity
                 .status(HttpStatus.NON_AUTHORITATIVE_INFORMATION)
                 .body(ApiResponse.fail("이메일 인증에 실패하였습니다.", HttpStatus.NON_AUTHORITATIVE_INFORMATION.value()));
+    }
+
+    @ExceptionHandler(NoWithinMarkerRange.class)
+    public ResponseEntity<ApiResponse<Object>> handlerNoWithinMarkerRange(Exception e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.fail(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
     }
 }
