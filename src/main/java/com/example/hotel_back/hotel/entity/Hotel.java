@@ -47,6 +47,12 @@ public class Hotel {
     @Column(length = 20, nullable = false)
     private String region;
 
+    @Column(nullable = false)
+    private Double latitude;
+
+    @Column(nullable = false)
+    private Double longitude;
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
