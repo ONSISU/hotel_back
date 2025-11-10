@@ -14,13 +14,22 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-
+        String requestPath = returnType.getMethod().getDeclaringClass().getName();
+        if (requestPath.contains("swagger") || requestPath.contains("openapi")) {
+            return false;
+        }
         // 모든 응답값 대상으로 지원한다.
         return true;
     }
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+        String uri = request.getURI().getPath();
+
+        // Exclude Swagger/OpenAPI endpoints
+        if (uri.contains("/swagger") || uri.contains("/v3/api-docs") || uri.contains("/webjars")) {
+            return body;
+        }
 
         if (body instanceof ApiResponse<?>) {
             return body;
