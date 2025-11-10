@@ -4,6 +4,7 @@ import com.example.hotel_back.common.exception.hotel.NoWithinMarkerRange;
 import com.example.hotel_back.hotel.dto.HotelMarker;
 import com.example.hotel_back.hotel.dto.HotelMarkerRequest;
 import com.example.hotel_back.hotel.service.HotelService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/hotel")
+@Tag(name = "Hotels", description = "Hotel management endpoints")
 public class HotelController {
 
     private final HotelService hotelService;

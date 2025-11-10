@@ -7,6 +7,15 @@ spring:
       port: 6379
       timeout: 6000
 
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  api-docs:
+    path: /v3/api-docs
+    title: Hotel API
+    description: Hotel Management System
+    version: 1.0.0
+
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:33306/hotel
