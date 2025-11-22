@@ -1,13 +1,40 @@
 package com.example.hotel_back.reservation.repository;
 
-import com.example.hotel_back.hotel.entity.Hotel;
+import com.example.hotel_back.ownhotel.entity.OwnHotel;
 import com.example.hotel_back.reservation.entity.Reservation;
 import com.example.hotel_back.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    Optional<List<Reservation>> findByHotelAndUser(Hotel hotel, User user);
+    Optional<List<Reservation>> findByOwnHotelAndUser(OwnHotel ownHotel, User user);
+
+    @Query("""
+            SELECT r from Reservation r
+            WHERE r.hotel.hotelId = :hotelId
+                AND r.startDate <= :start
+                AND r.endDate >= :end
+    """)
+    List<Reservation> findAllByHotelIdAndDate(
+            @Param("hotelId") Long hotelId,
+            @Param("start") LocalDate start,
+            @Param("end") LocalDate end
+    );
+
+    @Query("""
+            SELECT r from ReservationReservation r
+            WHERE r.ownHotel = :ownHotel
+                AND r.startDate >= :start
+                AND r.endDate <= :end
+    """)
+    List<Reservation> findAllByOwnHotelAndDate(
+            @Param("ownHotel") OwnHotel ownHotel,
+            @Param("start") LocalDate start,
+            @Param("end") LocalDate end
+    );
 }

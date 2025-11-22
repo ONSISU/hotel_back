@@ -2,6 +2,8 @@ package com.example.hotel_back.payment;
 
 import com.example.hotel_back.hotel.entity.Hotel;
 import com.example.hotel_back.hotel.repository.HotelRepository;
+import com.example.hotel_back.ownhotel.entity.OwnHotel;
+import com.example.hotel_back.ownhotel.repository.OwnHotelRepository;
 import com.example.hotel_back.payment.entity.Payment;
 import com.example.hotel_back.payment.entity.PaymentType;
 import com.example.hotel_back.payment.repository.PaymentRepository;
@@ -32,6 +34,9 @@ public class PaymentServiceTests {
     @Autowired
     private HotelRepository hotelRepository;
 
+    @Autowired
+    private OwnHotelRepository ownHotelRepository;
+
     @Test
     public void insertPayment() {
         // 11월 1일에 예약한 호텔
@@ -44,7 +49,10 @@ public class PaymentServiceTests {
         User user = userRepository.findByEmail(email).orElseThrow();
         Hotel hotel = hotelRepository.findByName(hotelName).orElseThrow();
 
-        List<Reservation> reservedList = reservationRepository.findByHotelAndUser(hotel, user).orElseThrow();
+        Long ownHotelId = 1L;
+        OwnHotel ownHotel = ownHotelRepository.findByOwnHotelId(ownHotelId);
+
+        List<Reservation> reservedList = reservationRepository.findByOwnHotelAndUser(ownHotel, user).orElseThrow();
 
         Reservation targetReservation = null;
 
@@ -52,7 +60,6 @@ public class PaymentServiceTests {
         for (Reservation r : reservedList) {
             String 확인날짜 = "2025-11-01";
             String reservedDate = r.getStartDate()
-                    .toLocalDate()
                     .toString();
 
             if (확인날짜.equals(reservedDate)) {

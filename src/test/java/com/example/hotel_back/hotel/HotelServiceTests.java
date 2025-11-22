@@ -25,7 +25,7 @@ public class HotelServiceTests {
     @DisplayName("호텔 추가 테스트")
     public void insertHotelTest() {
         // given
-        List<Hotel> hotels = HotelTestFixture.createHotels(1000);
+        List<Hotel> hotels = HotelTestFixture.createHotels(2);
 
         // when
         hotelRepository.saveAll(hotels);

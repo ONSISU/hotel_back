@@ -31,7 +31,7 @@ public class ReviewServiceTests {
         // TODO: 예약당 한번. 지금은 여러번 되어 이슈.
         String email = "tom@naver.com";
         User foundUser = userRepository.findByEmail(email).orElseThrow();
-        Hotel hotel = hotelRepository.findByName("별이 빛나 호텔").orElseThrow();
+        Hotel hotel = hotelRepository.findByName("강남구 호텔 1").orElseThrow();
 
         Review review = Review.builder()
                 .score(4)
