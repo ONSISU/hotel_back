@@ -27,7 +27,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     );
 
     @Query("""
-            SELECT r from ReservationReservation r
+            SELECT r from Reservation r
             WHERE r.ownHotel = :ownHotel
                 AND r.startDate >= :start
                 AND r.endDate <= :end
