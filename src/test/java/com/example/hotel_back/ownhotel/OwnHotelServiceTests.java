@@ -43,9 +43,9 @@ public class OwnHotelServiceTests {
     // 스탠다드형 10개짜리 소유
     OwnHotel ownHotel = OwnHotel.builder()
         .price(100000L)
-        .roomType("패밀리")
-        .roomName("Family Size Room")
-        .countRoom(3)
+        .roomType("싱글")
+        .roomName("Single Size Room")
+        .countRoom(2)
         .hotel(h)
         .build();
 
@@ -54,9 +54,7 @@ public class OwnHotelServiceTests {
 
     // then
     log.info("savedOwnHotel:{} ", savedOwnHotel.toString());
-    assertThat(savedOwnHotel.getRoomType()).isEqualTo("패밀리");
-
-
+    assertThat(savedOwnHotel.getRoomType()).isEqualTo("싱글");
   }
   
 }

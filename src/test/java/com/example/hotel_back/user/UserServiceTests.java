@@ -61,10 +61,10 @@ public class UserServiceTests {
     @Test
     public void joinUserTest() {
         Map<String, Object> map = new HashMap<>();
-        map.put("email", "tom%s@naver.com".formatted(테스트식별자));
+        map.put("email", "동훈%s@naver.com".formatted(테스트식별자));
         map.put("password", "1234");
-        map.put("fullName", "LEEDONGHOON%s".formatted(테스트식별자));
-        map.put("phone", "01090792222");
+        map.put("fullName", "이동훈%s".formatted(테스트식별자));
+        map.put("phone", "010555555%s".formatted(테스트식별자));
 
         ObjectMapper mapper = new ObjectMapper();
         User user = mapper.convertValue(map, User.class);
