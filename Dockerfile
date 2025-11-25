@@ -9,10 +9,10 @@ COPY build/libs/hotel_back.jar hotel_back.jar
 # create upload directory inside container
 
 # Create upload directory
-#RUN mkdir -p /app/uploads
+RUN mkdir -p /app/uploads
 
 # Copy existing uploads (if any)
-#COPY ./uploads/ /app/uploads/
+COPY ./uploads/ /app/uploads/
 
 # Declare as volume for persistence
 VOLUME ["/app/uploads"]
