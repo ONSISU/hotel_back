@@ -3,24 +3,25 @@ spring:
     name: project
   data:
     redis:
-      host: redis
+      host: redis-container
       port: 6379
       timeout: 6000
 
-  swagger-ui:
-    path: /swagger-ui.html
-    enabled: true
-  api-docs:
-    path: /v3/api-docs
-    title: Hotel API
-    description: Hotel Management System
-    version: 1.0.0
+  springdoc:
+    swagger-ui:
+      path: /swagger-ui.html
+      enabled: true
+    api-docs:
+      path: /v3/api-docs
+      title: Hotel API
+      description: Hotel Management System
+      version: 1.0.0
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://tomdb:3306/hotel
+    url: jdbc:mariadb://mariadb-container:3306/hotel
     username: root
-    password: 2846
+    password: 1234
 
   jpa:
     hibernate:
@@ -55,3 +56,7 @@ server:
       charset: UTF-8
       force: true
       enabled: true
+
+
+jwt:
+  secret: "jwtsecretkeyjwtsecretkeyjwtsecretkey12"

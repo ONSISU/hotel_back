@@ -1,5 +1,5 @@
 # Use a base image with Java
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk
 
 # Directory name of Docker Container
 WORKDIR /app
