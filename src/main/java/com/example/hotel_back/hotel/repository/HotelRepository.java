@@ -11,18 +11,25 @@ import java.util.List;
 import java.util.Optional;
 
 public interface HotelRepository extends JpaRepository<Hotel, Long> {
-    Optional<Hotel> findByName(String name);
+	Optional<Hotel> findByName(String name);
 
-    @Query("""
-            SELECT  new com.example.hotel_back.hotel.dto.HotelMarker(h.id, h.name, h.latitude, h.longitude) 
-            FROM Hotel h WHERE h.latitude BETWEEN :startLat AND :endLat
-            AND h.longitude BETWEEN :startLng AND :endLng
-            """
-    )
-    List<HotelMarker> findHotelsInBounds(
-            @Param("startLat") Double startLat,
-            @Param("endLat") Double endLat,
-            @Param("startLng") Double startLng,
-            @Param("endLng") Double endLng
-    );
+	@Query("""
+					SELECT  new com.example.hotel_back.hotel.dto.HotelMarker(h.id, h.name, h.latitude, h.longitude) 
+					FROM Hotel h WHERE h.latitude BETWEEN :startLat AND :endLat
+					AND h.longitude BETWEEN :startLng AND :endLng
+					"""
+	)
+	List<HotelMarker> findHotelsInBounds(
+					@Param("startLat") Double startLat,
+					@Param("endLat") Double endLat,
+					@Param("startLng") Double startLng,
+					@Param("endLng") Double endLng
+	);
+
+	@Query("""
+					    SELECT h FROM Hotel h
+					    WHERE h.name LIKE %:keyword%
+					       OR h.location LIKE %:keyword%
+					""")
+	List<Hotel> findAllByKeyword(@Param("keyword") String keyword);
 }

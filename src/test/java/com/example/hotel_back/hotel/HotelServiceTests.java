@@ -16,26 +16,26 @@ import java.util.List;
 @SpringBootTest
 public class HotelServiceTests {
 
-    @Autowired
-    private HotelRepository hotelRepository;
+	@Autowired
+	private HotelRepository hotelRepository;
 
-    private int 테스트식별자 = LocalTime.now().getSecond();
+	private int 테스트식별자 = LocalTime.now().getSecond();
 
-    @Test
-    @DisplayName("호텔 추가 테스트")
-    public void insertHotelTest() {
-        // given
-        List<Hotel> hotels = HotelTestFixture.createHotels(1000);
+	@Test
+	@DisplayName("호텔 추가 테스트")
+	public void insertHotelTest() {
+		// given
+		List<Hotel> hotels = HotelTestFixture.createHotels(30);
 
-        // when
-        hotelRepository.saveAll(hotels);
+		// when
+		hotelRepository.saveAll(hotels);
 
-        // then 저장된다
+		// then 저장된다
 
-    }
+	}
 
-    @Test
-    public void deleteTest() {
-        hotelRepository.deleteById(2L);
-    }
+	@Test
+	public void deleteTest() {
+		hotelRepository.deleteById(2L);
+	}
 }

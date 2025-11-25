@@ -18,42 +18,43 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 
-        http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth ->
-                    auth
-                            .requestMatchers("/api/v1/*").permitAll()
-                            /*.requestMatchers("/api/v1/admin/**").hasRole("ADMIN")*/
-                            .anyRequest().permitAll()
-                )
-                .formLogin(login -> login.disable())
-                .httpBasic(basic -> basic.disable());
+		http
+						.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+						.csrf(csrf -> csrf.disable())
+						.authorizeHttpRequests(auth ->
+										auth
+														.requestMatchers("/uploads/**").permitAll() // Allow access to images
+														.requestMatchers("/api/v1/*").permitAll()
+														/*.requestMatchers("/api/v1/admin/**").hasRole("ADMIN")*/
+														.anyRequest().permitAll()
+						)
+						.formLogin(login -> login.disable())
+						.httpBasic(basic -> basic.disable());
 
-        return http.build();
+		return http.build();
 
-    }
+	}
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(List.of("http://localhost:3000"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowedOriginPatterns(List.of("http://localhost:3000"));
+		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+		config.setAllowedHeaders(List.of("*"));
+		config.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", config);
 
-        return source;
-    }
+		return source;
+	}
 }

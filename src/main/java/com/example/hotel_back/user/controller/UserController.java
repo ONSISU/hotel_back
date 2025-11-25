@@ -18,31 +18,38 @@ import java.util.Map;
 @RequestMapping("/api/v1/auth")
 public class UserController {
 
-    private final UserService userService;
+	private final UserService userService;
 
-    @PostMapping("/sendEmail")
-    public Boolean sendEmail(@RequestBody Map<String, String> emailMap) {
+	@PostMapping("/sendEmail")
+	public Boolean sendEmail(@RequestBody Map<String, String> emailMap) {
 
-        return userService.sendVerificationCode(emailMap.get("email"));
-    }
+		return userService.sendVerificationCode(emailMap.get("email"));
+	}
 
-    @PostMapping("/verifyEmail")
-    public Boolean verifyEmail(@Valid @RequestBody UserVerifyEmailDTO dto) {
-        return userService.verifyEmail(dto);
-    }
+	@PostMapping("/verifyEmail")
+	public Boolean verifyEmail(@Valid @RequestBody UserVerifyEmailDTO dto) {
+		return userService.verifyEmail(dto);
+	}
 
-    @PostMapping("/signup")
-    public UserResponseDTO registerUser(@Valid @RequestBody UserRequestDTO dto) {
-        UserResponseDTO 가입자정보 = userService.join(dto);
+	@PostMapping("/signup")
+	public UserResponseDTO registerUser(@Valid @RequestBody UserRequestDTO dto) {
+		UserResponseDTO 가입자정보 = userService.join(dto);
 
-        return 가입자정보;
-    }
+		return 가입자정보;
+	}
 
-    @PostMapping("/login")
-    public UserResponseDTO lognUser(@RequestBody UserRequestDTO userRequestDTO) {
-        UserResponseDTO dto = userService.login(userRequestDTO);
+	@PostMapping("/login")
+	public UserResponseDTO loginUser(@RequestBody UserRequestDTO userRequestDTO) {
+		UserResponseDTO dto = userService.login(userRequestDTO);
 
-        return dto;
-    }
+		return dto;
+	}
+
+	@PostMapping("/testJoin")
+	public UserResponseDTO testRegisterUser(@Valid @RequestBody UserRequestDTO dto) {
+		UserResponseDTO 가입자정보 = userService.testJoin(dto);
+
+		return 가입자정보;
+	}
 
 }
