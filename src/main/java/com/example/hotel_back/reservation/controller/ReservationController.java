@@ -19,7 +19,6 @@ public class ReservationController {
 	private final ReservationService reservationService;
 	private final JwtUtil jwtUtil;
 
-	@Schema()
 	@PostMapping("/room")
 	public ReservedRoom reserveRoom(@RequestBody ReserveRoomRequest request) {
 		return reservationService.reserveHotel(request);

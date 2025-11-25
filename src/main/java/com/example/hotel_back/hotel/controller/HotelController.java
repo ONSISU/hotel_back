@@ -1,6 +1,7 @@
 package com.example.hotel_back.hotel.controller;
 
 import com.example.hotel_back.common.exception.hotel.NoWithinMarkerRange;
+import com.example.hotel_back.hotel.dto.HotelDTO;
 import com.example.hotel_back.hotel.dto.HotelMarker;
 import com.example.hotel_back.hotel.dto.HotelMarkerRequest;
 import com.example.hotel_back.hotel.service.HotelService;
@@ -19,28 +20,40 @@ import java.util.List;
 @Tag(name = "Hotels", description = "Hotel management endpoints")
 public class HotelController {
 
-    private final HotelService hotelService;
+	private final HotelService hotelService;
 
-    @GetMapping("/markers")
-    public List<HotelMarker> getHotelMarkers(
-            @RequestParam Double startLat,
-            @RequestParam Double endLat,
-            @RequestParam Double startLng,
-            @RequestParam Double endLng,
-            @RequestParam Integer zoomLevel
-    ) {
-        HotelMarkerRequest request = new HotelMarkerRequest(
-                startLat, endLat,startLng, endLng, zoomLevel
-        );
+	@GetMapping("/markers")
+	public List<HotelMarker> getHotelMarkers(
+					@RequestParam Double startLat,
+					@RequestParam Double endLat,
+					@RequestParam Double startLng,
+					@RequestParam Double endLng,
+					@RequestParam Integer zoomLevel
+	) {
+		HotelMarkerRequest request = new HotelMarkerRequest(
+						startLat, endLat, startLng, endLng, zoomLevel
+		);
 
-        Boolean is마커노출범위 = 13 <= request.getZoomLevel() && request.getZoomLevel() <= 21;
-        Boolean is클러스터노출범위 = 0 <= request.getZoomLevel() && request.getZoomLevel() <= 12;
+		Boolean is마커노출범위 = 13 <= request.getZoomLevel() && request.getZoomLevel() <= 21;
+		Boolean is클러스터노출범위 = 0 <= request.getZoomLevel() && request.getZoomLevel() <= 12;
 
-        if (!is마커노출범위 && !is클러스터노출범위) {
-            throw new NoWithinMarkerRange("마커 노출 범위가 아닙니다.");
-        }
+		if (!is마커노출범위 && !is클러스터노출범위) {
+			throw new NoWithinMarkerRange("마커 노출 범위가 아닙니다.");
+		}
 
-        List<HotelMarker> list = hotelService.getHotelMarkers(request);
-        return list;
-    }
+		List<HotelMarker> list = hotelService.getHotelMarkers(request);
+		return list;
+	}
+
+	@GetMapping("/search")
+	public List<HotelDTO> getSearch(@RequestParam String keyword) {
+		return hotelService.getSearch(keyword);
+	}
+
+	@GetMapping("/popular")
+	public List<HotelDTO> getPopular() {
+		return hotelService.getPopular();
+	}
+
+
 }
