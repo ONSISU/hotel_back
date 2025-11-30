@@ -1,6 +1,7 @@
 package com.example.hotel_back.hotel;
 
 import com.example.hotel_back.hotel.entity.Hotel;
+import com.example.hotel_back.hotel.entity.HotelType;
 import com.example.hotel_back.hotel.repository.HotelRepository;
 import com.example.hotel_back.common.util.RandomNumberUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +26,20 @@ public class HotelServiceTests {
 	@DisplayName("호텔 추가 테스트")
 	public void insertHotelTest() {
 		// given
-		List<Hotel> hotels = HotelTestFixture.createHotels(30);
+		List<Hotel> hotels = HotelTestFixture.createHotels(10);
+
+		// when
+		hotelRepository.saveAll(hotels);
+
+		// then 저장된다
+
+	}
+
+	@Test
+	@DisplayName("빌라 추가 테스트")
+	public void insertVillaTest() {
+		// given
+		List<Hotel> hotels = HotelTestFixture.createHotels(10, HotelType.VILLA);
 
 		// when
 		hotelRepository.saveAll(hotels);

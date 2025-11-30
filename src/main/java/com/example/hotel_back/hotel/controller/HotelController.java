@@ -1,9 +1,8 @@
 package com.example.hotel_back.hotel.controller;
 
 import com.example.hotel_back.common.exception.hotel.NoWithinMarkerRange;
-import com.example.hotel_back.hotel.dto.HotelDTO;
-import com.example.hotel_back.hotel.dto.HotelMarker;
-import com.example.hotel_back.hotel.dto.HotelMarkerRequest;
+import com.example.hotel_back.hotel.dto.*;
+import com.example.hotel_back.hotel.entity.HotelType;
 import com.example.hotel_back.hotel.service.HotelService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -46,14 +45,31 @@ public class HotelController {
 	}
 
 	@GetMapping("/search")
-	public List<HotelDTO> getSearch(@RequestParam String keyword) {
-		return hotelService.getSearch(keyword);
+	public List<HotelSearchResponse> getSearch(@RequestParam(required = false) String keyword, @RequestParam(required = false) HotelType type) {
+		return hotelService.getSearch(keyword, type);
 	}
 
 	@GetMapping("/popular")
 	public List<HotelDTO> getPopular() {
 		return hotelService.getPopular();
 	}
+
+	@GetMapping("/detail")
+	public HotelDetailResponse getDetail(@RequestParam Long hotelId) {
+		return hotelService.getDetail(hotelId);
+	}
+
+//	@GetMapping("/list")
+//	public Page<HotelDTO> getList(
+//					@RequestParam(name = "page", defaultValue = "1") Integer pageNumber,
+//					@RequestParam(name = "size", defaultValue = "10") Integer size,
+//					@RequestParam(name = "location", defaultValue = "all") String location
+//	) {
+//
+//		Pageable pageable = PageRequest.of(pageNumber, size);
+//		Page<HotelDTO> list = hotelService.getHotelsByLocation(pageable, location);
+//		return list;
+//	}
 
 
 }

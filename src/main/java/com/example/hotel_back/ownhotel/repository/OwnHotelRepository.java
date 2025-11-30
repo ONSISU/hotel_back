@@ -10,10 +10,12 @@ import com.example.hotel_back.hotel.entity.Hotel;
 import com.example.hotel_back.ownhotel.entity.OwnHotel;
 import org.springframework.data.jpa.repository.Query;
 
-public interface OwnHotelRepository extends JpaRepository<OwnHotel, Long>{
-  Optional<OwnHotel> findByHotel(Hotel hotel);
+public interface OwnHotelRepository extends JpaRepository<OwnHotel, Long> {
+	Optional<OwnHotel> findByHotel(Hotel hotel);
 
-  OwnHotel findByOwnHotelId(Long ownHotelId);
+	OwnHotel findByOwnHotelId(Long ownHotelId);
 
-  List<OwnHotel> findAllByHotel(Hotel hotel);
+	List<OwnHotel> findAllByHotel(Hotel hotel);
+
+	List<OwnHotel> findAllByHotel_HotelId(Long hotelId);
 }

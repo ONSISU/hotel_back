@@ -3,8 +3,8 @@ spring:
     name: project
   data:
     redis:
-      host: redis-container
-      port: 6379
+      host: 192.168.0.200
+      port: 16379
       timeout: 6000
 
   springdoc:
@@ -19,9 +19,9 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://mariadb-container:3306/hotel
+    url: jdbc:mariadb://192.168.0.200:33306/hotel
     username: root
-    password: 1234
+    password: 2846
 
   jpa:
     hibernate:
