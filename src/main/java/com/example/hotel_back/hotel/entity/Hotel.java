@@ -1,6 +1,7 @@
 package com.example.hotel_back.hotel.entity;
 
 
+import com.example.hotel_back.payment.entity.PaymentType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,45 +24,50 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class Hotel {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long hotelId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long hotelId;
 
-    @Column(length = 20, nullable = false)
-    private String location;
+	@Column(length = 20, nullable = false)
+	private String location;
 
-    @Column(length = 20, nullable = false)
-    private String name;
+	@Column(length = 20, nullable = false)
+	private String name;
 
-    @Column(length = 20, nullable = false)
-    private String tel;
+	@Column(length = 20, nullable = false)
+	private String tel;
 
-    @Column(length = 20, nullable = false)
-    private String owner;
+	@Column(length = 20, nullable = false)
+	private String owner;
 
-    @Column(length = 20, nullable = false, unique = true)
-    private String businessNumber;
+	@Column(length = 20, nullable = false, unique = true)
+	private String businessNumber;
 
-    @Column(length = 20, nullable = false)
-    private String registNumber;
+	@Column(length = 20, nullable = false)
+	private String registNumber;
 
-    @Column(length = 20, nullable = false)
-    private String region;
+	@Column(length = 20, nullable = false)
+	private String region;
 
-    @Column(nullable = false)
-    private Double latitude;
+	@Column(nullable = false)
+	private Double latitude;
 
-    @Column(nullable = false)
-    private Double longitude;
+	@Column(nullable = false)
+	private Double longitude;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
+	@Enumerated
+	@Column(nullable = false)
+	private HotelType hotelType;
 
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
+	@CreatedDate
+	@Column(updatable = false)
+	private LocalDateTime createdAt;
 
-    @OneToMany
-    @JoinColumn(name = "hotel_id")
-    private List<Facility> facility;
+	@LastModifiedDate
+	private LocalDateTime updatedAt;
+
+	@OneToMany
+	@JoinColumn(name = "hotel_id")
+	private List<Facility> facility;
 
 }
