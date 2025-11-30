@@ -6,6 +6,9 @@ import com.example.hotel_back.hotel.entity.HotelType;
 import com.example.hotel_back.hotel.service.HotelService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,8 +48,14 @@ public class HotelController {
 	}
 
 	@GetMapping("/search")
-	public List<HotelSearchResponse> getSearch(@RequestParam(required = false) String keyword, @RequestParam(required = false) HotelType type) {
-		return hotelService.getSearch(keyword, type);
+	public Page<HotelSearchResponse> getSearch(
+					@RequestParam(required = false) String keyword,
+					@RequestParam(required = false) HotelType type,
+					@RequestParam(defaultValue = "1") int page,
+					@RequestParam(defaultValue = "10") int size
+	) {
+		PageRequest pageable = PageRequest.of(page - 1, size);
+		return hotelService.getSearch(keyword, type, pageable);
 	}
 
 	@GetMapping("/popular")

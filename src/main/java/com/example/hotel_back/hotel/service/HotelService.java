@@ -9,6 +9,7 @@ import com.example.hotel_back.ownhotel.entity.OwnHotel;
 import com.example.hotel_back.ownhotel.repository.OwnHotelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -34,16 +35,16 @@ public class HotelService {
 		return list;
 	}
 
-	public List<HotelSearchResponse> getSearch(String keyword, HotelType type) {
-		List<HotelSearchProjection> prjList = hotelRepository.findAllByKeyword(keyword, type);
-		List<HotelSearchResponse> list = prjList.stream()
+	public Page<HotelSearchResponse> getSearch(String keyword, HotelType type, Pageable pageable) {
+		Page<HotelSearchProjection> prjList = hotelRepository.findAllByKeyword(keyword, type, pageable);
+
+		Page<HotelSearchResponse> list = prjList
 						.map(i -> HotelSearchResponse.builder()
 										.hotelId(i.getHotelId())
 										.hotelType(i.getHotelType())
 										.price(i.getPrice())
 										.location(i.getLocation())
-										.build())
-						.toList();
+										.build());
 
 		for (HotelSearchResponse r : list) {
 			Long hotelId = r.getHotelId();

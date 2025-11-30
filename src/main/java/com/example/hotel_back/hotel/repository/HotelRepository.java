@@ -46,7 +46,7 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
 						OR h.location LIKE CONCAT('%', :keyword, '%')) 
 						AND (:type IS NULL OR h.hotelType = :type) 
 					""")
-	List<HotelSearchProjection> findAllByKeyword(@Param("keyword") String keyword, @Param("type") HotelType type);
+	Page<HotelSearchProjection> findAllByKeyword(@Param("keyword") String keyword, @Param("type") HotelType type, Pageable pageable);
 
 	@Query("""
 					
