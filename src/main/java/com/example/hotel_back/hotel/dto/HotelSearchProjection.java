@@ -6,6 +6,12 @@ public interface HotelSearchProjection {
 
 	String getHotelType();
 
+	String getHotelName();
+
+	String getRegistNumber();
+
+	String getBusinessNumber();
+
 	Double getPrice();
 
 	String getLocation();

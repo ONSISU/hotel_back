@@ -30,47 +30,52 @@ import lombok.NoArgsConstructor;
 @EntityListeners(AuditingEntityListener.class)
 public class OwnHotel {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long ownHotelId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long ownHotelId;
 
-  @Column(columnDefinition = "BIGINT UNSIGNED")
-  private Long price;
+	@Column(columnDefinition = "BIGINT UNSIGNED")
+	private Long price;
 
-  @Column(columnDefinition = "INT UNSIGNED", nullable = false)
-  private int countRoom;
+	@Column(columnDefinition = "INT UNSIGNED", nullable = false)
+	private int countRoom;
 
-  @Column(columnDefinition = "TIME")
-  @Builder.Default
-  private LocalTime checkInTime = LocalTime.of(15, 0);
+	@Column(columnDefinition = "TIME")
+	@Builder.Default
+	private LocalTime checkInTime = LocalTime.of(15, 0);
 
-  @Column(columnDefinition = "TIME")
-  @Builder.Default
-  private LocalTime checkOutTime = LocalTime.of(11, 0);
+	@Column(columnDefinition = "TIME")
+	@Builder.Default
+	private LocalTime checkOutTime = LocalTime.of(11, 0);
 
-  @Column(length = 50)
-  private String roomType;
-  
-  @Column(length = 100)
-  private String roomName;
+	@Column(length = 50)
+	private String roomType;
 
-  @Column(columnDefinition = "INT UNSIGNED")
-  @Builder.Default
-  private int maxPerson = 2;
+	@Column(length = 100)
+	private String roomName;
 
-  @Column(columnDefinition = "INT UNSIGNED")
-  @Builder.Default
-  private int minPerson = 1;
+	@Column(columnDefinition = "INT UNSIGNED")
+	@Builder.Default
+	private int maxPerson = 2;
 
-  @CreatedDate
-  @Column(updatable = false)
-  private LocalDateTime createdAt;
+	@Column(columnDefinition = "INT UNSIGNED")
+	@Builder.Default
+	private int minPerson = 1;
 
-  @LastModifiedDate
-  private LocalDateTime updatedAt;
+	@CreatedDate
+	@Column(updatable = false)
+	private LocalDateTime createdAt;
 
-  @ManyToOne
-  @JoinColumn(name = "hotel_id")
-  private Hotel hotel;
-  
+	@LastModifiedDate
+	private LocalDateTime updatedAt;
+
+	@ManyToOne
+	@JoinColumn(name = "hotel_id")
+	private Hotel hotel;
+
+	@Builder.Default
+	private Double owner_discount = 5.0;
+	@Builder.Default
+	private Double platform_discount = 10.0;
+
 }

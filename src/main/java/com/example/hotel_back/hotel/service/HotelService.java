@@ -41,6 +41,10 @@ public class HotelService {
 		Page<HotelSearchResponse> list = prjList
 						.map(i -> HotelSearchResponse.builder()
 										.hotelId(i.getHotelId())
+										.hotelName(i.getHotelName())
+										.businessNumber(i.getBusinessNumber())
+										.registNumber(i.getRegistNumber())
+										.location(i.getLocation())
 										.hotelType(i.getHotelType())
 										.price(i.getPrice())
 										.location(i.getLocation())
@@ -130,6 +134,10 @@ public class HotelService {
 
 		return HotelDetailResponse.builder()
 						.hotelId(res.getHotelId())
+						.hotelName(res.getHotelName())
+						.businessNumber(res.getBusinessNumber())
+						.registNumber(res.getRegistNumber())
+						.tel(res.getTel())
 						.pictureUrl(res.getPictureUrl())
 						.location(res.getLocation())
 						.latitude(res.getLatitude())

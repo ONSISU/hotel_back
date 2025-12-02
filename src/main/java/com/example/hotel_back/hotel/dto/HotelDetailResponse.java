@@ -15,16 +15,15 @@ import java.util.List;
 public class HotelDetailResponse {
 
 	private Long hotelId;
-
+	private String hotelName;
+	private String businessNumber;
+	private String registNumber;
 	private String pictureUrl;
-
+	private String tel;
 	private String location;
-
 	private Double latitude;
 	private Double longitude;
-
 	private List<OwnHotelDTO> ownHotelList;
-
 	private Integer roomCounts;
 
 }

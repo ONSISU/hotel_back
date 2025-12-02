@@ -2,6 +2,7 @@ package com.example.hotel_back.hotel.dto;
 
 public interface HotelDetailProjection {
 
+
 	Long getHotelId();
 
 	String getPictureUrl();
@@ -9,6 +10,12 @@ public interface HotelDetailProjection {
 	String getHotelName();
 
 	String getLocation();
+
+	String getBusinessNumber();
+
+	String getRegistNumber();
+
+	String getTel();
 
 	String getDescription();
 
