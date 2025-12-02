@@ -16,6 +16,9 @@ public class HotelSearchResponse {
 
 	private Long hotelId;
 	private String hotelType;
+	private String hotelName;
+	private String businessNumber;
+	private String registNumber;
 	private Double price;
 	private String location;
 	private List<OwnHotelDTO> ownHotelList;

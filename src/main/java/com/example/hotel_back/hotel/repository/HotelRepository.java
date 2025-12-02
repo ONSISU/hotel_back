@@ -34,10 +34,14 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
 
 	// Repository
 	@Query("""
-						SELECT h.hotelId AS hotelId, 
-					        h.hotelType AS hotelType,
+						SELECT 
+							h.hotelId AS hotelId, 
+							h.name as hotelName,
+							h.businessNumber as businessNumber,
+							h.registNumber as registNumber,
+					     h.hotelType AS hotelType,
 					     o.price AS price,
-					      h.location AS location
+					     h.location AS location
 						FROM Hotel h
 						JOIN OwnHotel o 
 							ON o.hotel.hotelId = h.hotelId
@@ -59,6 +63,9 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
 						h.hotelId as hotelId,
 						hp.pictureUrl as pictureUrl,
 						h.name as hotelName,
+						h.tel as tel,
+						h.businessNumber as businessNumber,
+						h.registNumber as registNumber,
 						h.location as location,
 						h.latitude as latitude,
 						h. longitude as longitude,
