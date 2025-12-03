@@ -12,7 +12,9 @@ public interface HotelSearchProjection {
 
 	String getBusinessNumber();
 
-	Double getPrice();
+	Double getMinPrice();
+
+	Double getMaxPrice();
 
 	String getLocation();
 }

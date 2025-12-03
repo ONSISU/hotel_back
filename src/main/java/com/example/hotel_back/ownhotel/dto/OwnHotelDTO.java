@@ -36,6 +36,10 @@ public class OwnHotelDTO {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 
+	private Double platform_discount;
+	private Double owner_discount;
+
+
 	public OwnHotelDTO(OwnHotel ownHotel) {
 		this.ownHotelId = ownHotel.getOwnHotelId();
 		this.price = ownHotel.getPrice();

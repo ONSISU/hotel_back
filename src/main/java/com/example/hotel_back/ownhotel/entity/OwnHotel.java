@@ -3,6 +3,7 @@ package com.example.hotel_back.ownhotel.entity;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import com.example.hotel_back.ownhotel.dto.OwnHotelDTO;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -77,5 +78,22 @@ public class OwnHotel {
 	private Double owner_discount = 5.0;
 	@Builder.Default
 	private Double platform_discount = 10.0;
+
+	public OwnHotelDTO toDTO() {
+		return OwnHotelDTO.builder()
+						.ownHotelId(this.getOwnHotelId())
+						.price(this.getPrice())
+						.countRoom(this.getCountRoom())
+						.checkInTime(this.getCheckInTime())
+						.checkOutTime(this.getCheckOutTime())
+						.roomType(this.getRoomType())
+						.maxPerson(this.getMaxPerson())
+						.minPerson(this.getMinPerson())
+						.createdAt(this.getCreatedAt())
+						.updatedAt(this.getUpdatedAt())
+						.owner_discount(this.getOwner_discount())
+						.platform_discount(this.getPlatform_discount())
+						.build();
+	}
 
 }

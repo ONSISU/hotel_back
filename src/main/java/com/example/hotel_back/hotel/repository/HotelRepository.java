@@ -32,25 +32,39 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
 					@Param("endLng") Double endLng
 	);
 
-	// Repository
-	@Query("""
-						SELECT 
-							h.hotelId AS hotelId, 
-							h.name as hotelName,
-							h.businessNumber as businessNumber,
-							h.registNumber as registNumber,
-					     h.hotelType AS hotelType,
-					     o.price AS price,
-					     h.location AS location
-						FROM Hotel h
-						JOIN OwnHotel o 
-							ON o.hotel.hotelId = h.hotelId
-						WHERE (
-							:keyword IS NULL OR h.name LIKE CONCAT('%', :keyword, '%') 
-						OR h.location LIKE CONCAT('%', :keyword, '%')) 
-						AND (:type IS NULL OR h.hotelType = :type) 
-					""")
-	Page<HotelSearchProjection> findAllByKeyword(@Param("keyword") String keyword, @Param("type") HotelType type, Pageable pageable);
+	@Query(
+					value = """
+									    SELECT 
+									        h.hotelId AS hotelId,
+									        h.name AS hotelName,
+									        h.businessNumber AS businessNumber,
+									        h.registNumber AS registNumber,
+									        h.hotelType AS hotelType,
+									        MIN(o.price) AS minPrice,
+									        MAX(o.price) AS maxPrice,
+									        h.location AS location
+									    FROM Hotel h
+									    JOIN OwnHotel o ON o.hotel = h
+									    GROUP BY 
+									        h.hotelId, 
+									        h.name, 
+									        h.businessNumber,
+									        h.registNumber,
+									        h.hotelType,
+									        h.location
+									""",
+					countQuery = """
+									    SELECT COUNT(DISTINCT h.hotelId)
+									    FROM Hotel h
+									    JOIN OwnHotel o ON o.hotel = h
+									"""
+	)
+	Page<HotelSearchProjection> findAllHotelsByKeyword(
+					@Param("keyword") String keyword,
+					@Param("type") HotelType type,
+					Pageable pageable
+	);
+
 
 	@Query("""
 					

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @RequiredArgsConstructor
@@ -36,44 +37,41 @@ public class HotelService {
 	}
 
 	public Page<HotelSearchResponse> getSearch(String keyword, HotelType type, Pageable pageable) {
-		Page<HotelSearchProjection> prjList = hotelRepository.findAllByKeyword(keyword, type, pageable);
+		Page<HotelSearchProjection> page = hotelRepository.findAllHotelsByKeyword(keyword, type, pageable);
 
-		Page<HotelSearchResponse> list = prjList
-						.map(i -> HotelSearchResponse.builder()
-										.hotelId(i.getHotelId())
-										.hotelName(i.getHotelName())
-										.businessNumber(i.getBusinessNumber())
-										.registNumber(i.getRegistNumber())
-										.location(i.getLocation())
-										.hotelType(i.getHotelType())
-										.price(i.getPrice())
-										.location(i.getLocation())
-										.build());
+		List<String> randomImages = List.of(
+						"/uploads/randomHotels/그랜드하얏트.jpg",
+						"/uploads/randomHotels/글래드여의도.jpg",
+						"/uploads/randomHotels/롯데호텔.jpg",
+						"/uploads/randomHotels/서머셋.jpg",
+						"/uploads/randomHotels/신라스테이.jpg",
+						"/uploads/randomHotels/켄싱턴.jpg",
+						"/uploads/randomHotels/페어필드.jpg"
+		);
 
-		for (HotelSearchResponse r : list) {
-			Long hotelId = r.getHotelId();
-			Hotel h = hotelRepository.findById(hotelId).orElseThrow();
-			List<OwnHotelDTO> ownHotelList = ownHotelRepository.findAllByHotel(h)
-							.stream()
-							.map(i -> OwnHotelDTO.builder()
-											.ownHotelId(i.getOwnHotelId())
-											.price(i.getPrice())
-											.countRoom(i.getCountRoom())
-											.checkInTime(i.getCheckInTime())
-											.checkOutTime(i.getCheckOutTime())
-											.roomType(i.getRoomType())
-											.roomName(i.getRoomName())
-											.maxPerson(i.getMaxPerson())
-											.minPerson(i.getMinPerson())
-											.createdAt(i.getCreatedAt())
-											.updatedAt(i.getUpdatedAt())
-											.build())
-							.toList();
+		return page.map(p -> {
+			return HotelSearchResponse.builder()
+							.hotelId(p.getHotelId())
+							.hotelName(p.getHotelName())
+							.businessNumber(p.getBusinessNumber())
+							.registNumber(p.getRegistNumber())
+							.location(p.getLocation())
+							.hotelType(p.getHotelType())
+							.location(p.getLocation())
+							.ownHotelList(ownHotelRepository.findAllByHotel_HotelId(p.getHotelId())
+											.stream()
+											.map(ownHotel -> {
+												int randomNumber = ThreadLocalRandom.current().nextInt(0, randomImages.size() - 1);
 
-			r.setOwnHotelList(ownHotelList);
-		}
+												var dto = ownHotel.toDTO();
+												dto.setPictureList(List.of(randomImages.get(randomNumber)));
+												return dto;
+											})
+											.toList()
+							)
+							.build();
+		});
 
-		return list;
 	}
 
 	public List<HotelDTO> getPopular() {
