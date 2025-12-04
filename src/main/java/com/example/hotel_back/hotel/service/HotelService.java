@@ -46,10 +46,22 @@ public class HotelService {
 						"/uploads/randomHotels/서머셋.jpg",
 						"/uploads/randomHotels/신라스테이.jpg",
 						"/uploads/randomHotels/켄싱턴.jpg",
-						"/uploads/randomHotels/페어필드.jpg"
+						"/uploads/randomHotels/페어필드.jpg",
+						"/uploads/randomHotels/나인트리.jpg",
+						"/uploads/randomHotels/리베라.jpg",
+						"/uploads/randomHotels/비스타.jpg",
+						"/uploads/randomHotels/소테츠.jpg",
+						"/uploads/randomHotels/안토.jpg",
+						"/uploads/randomHotels/올림피아.jpg",
+						"/uploads/randomHotels/호텔인나인.jpg",
+						"/uploads/randomHotels/서머셋.jpg",
+						"/uploads/randomHotels/롯데호텔.jpg",
+						"/uploads/randomHotels/메리어트.jpg"
 		);
 
 		return page.map(p -> {
+			int hotelRandomNumber = ThreadLocalRandom.current().nextInt(0, randomImages.size() - 1);
+
 			return HotelSearchResponse.builder()
 							.hotelId(p.getHotelId())
 							.hotelName(p.getHotelName())
@@ -58,6 +70,7 @@ public class HotelService {
 							.location(p.getLocation())
 							.hotelType(p.getHotelType())
 							.location(p.getLocation())
+							.hotelPictureList(List.of(randomImages.get(hotelRandomNumber)))
 							.ownHotelList(ownHotelRepository.findAllByHotel_HotelId(p.getHotelId())
 											.stream()
 											.map(ownHotel -> {

@@ -21,6 +21,7 @@ public class HotelSearchResponse {
 	private String registNumber;
 	private Double price;
 	private Double maxPrice;
+	private List<String> hotelPictureList;
 	private Double minPrice;
 	private String location;
 	private List<OwnHotelDTO> ownHotelList;
