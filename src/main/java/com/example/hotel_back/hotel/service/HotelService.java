@@ -25,6 +25,31 @@ public class HotelService {
 
 	private final HotelRepository hotelRepository;
 	private final OwnHotelRepository ownHotelRepository;
+	private static final List<String> RANDOM_IMAGES = List.of(
+					"/uploads/randomHotels/그랜드하얏트.jpg",
+					"/uploads/randomHotels/글래드여의도.jpg",
+					"/uploads/randomHotels/롯데호텔.jpg",
+					"/uploads/randomHotels/서머셋.jpg",
+					"/uploads/randomHotels/신라스테이.jpg",
+					"/uploads/randomHotels/켄싱턴.jpg",
+					"/uploads/randomHotels/페어필드.jpg",
+					"/uploads/randomHotels/나인트리.jpg",
+					"/uploads/randomHotels/리베라.jpg",
+					"/uploads/randomHotels/비스타.jpg",
+					"/uploads/randomHotels/소테츠.jpg",
+					"/uploads/randomHotels/안토.jpg",
+					"/uploads/randomHotels/올림피아.jpg",
+					"/uploads/randomHotels/호텔인나인.jpg",
+					"/uploads/randomHotels/서머셋.jpg",
+					"/uploads/randomHotels/롯데호텔.jpg",
+					"/uploads/randomHotels/메리어트.jpg",
+					"/uploads/randomHotels/소피텔.jpg",
+					"/uploads/randomHotels/신라스테이마포.jpg",
+					"/uploads/randomHotels/이비스.jpg",
+					"/uploads/randomHotels/조선팰리스.jpg",
+					"/uploads/randomHotels/파크하비오.jpg",
+					"/uploads/randomHotels/플레이저.jpg"
+	);
 
 	public List<HotelMarker> getHotelMarkers(HotelMarkerRequest request) {
 		List<HotelMarker> list =
@@ -39,17 +64,10 @@ public class HotelService {
 	public Page<HotelSearchResponse> getSearch(String keyword, HotelType type, Pageable pageable) {
 		Page<HotelSearchProjection> page = hotelRepository.findAllHotelsByKeyword(keyword, type, pageable);
 
-		List<String> randomImages = List.of(
-						"/uploads/randomHotels/그랜드하얏트.jpg",
-						"/uploads/randomHotels/글래드여의도.jpg",
-						"/uploads/randomHotels/롯데호텔.jpg",
-						"/uploads/randomHotels/서머셋.jpg",
-						"/uploads/randomHotels/신라스테이.jpg",
-						"/uploads/randomHotels/켄싱턴.jpg",
-						"/uploads/randomHotels/페어필드.jpg"
-		);
 
 		return page.map(p -> {
+			int hotelRandomNumber = ThreadLocalRandom.current().nextInt(0, RANDOM_IMAGES.size() - 1);
+
 			return HotelSearchResponse.builder()
 							.hotelId(p.getHotelId())
 							.hotelName(p.getHotelName())
@@ -58,13 +76,14 @@ public class HotelService {
 							.location(p.getLocation())
 							.hotelType(p.getHotelType())
 							.location(p.getLocation())
+							.hotelPictureList(List.of(RANDOM_IMAGES.get(hotelRandomNumber)))
 							.ownHotelList(ownHotelRepository.findAllByHotel_HotelId(p.getHotelId())
 											.stream()
 											.map(ownHotel -> {
-												int randomNumber = ThreadLocalRandom.current().nextInt(0, randomImages.size() - 1);
+												int randomNumber = ThreadLocalRandom.current().nextInt(0, RANDOM_IMAGES.size() - 1);
 
 												var dto = ownHotel.toDTO();
-												dto.setPictureList(List.of(randomImages.get(randomNumber)));
+												dto.setPictureList(List.of(RANDOM_IMAGES.get(randomNumber)));
 												return dto;
 											})
 											.toList()
@@ -129,6 +148,7 @@ public class HotelService {
 
 		List<OwnHotel> ownHotelList = ownHotelRepository.findAllByHotel_HotelId(hotelIdForFind);
 		List<OwnHotelDTO> list = ownHotelList.stream().map(OwnHotelDTO::new).toList();
+		int hotelRandomNumber = ThreadLocalRandom.current().nextInt(0, RANDOM_IMAGES.size() - 1);
 
 		return HotelDetailResponse.builder()
 						.hotelId(res.getHotelId())
@@ -136,11 +156,15 @@ public class HotelService {
 						.businessNumber(res.getBusinessNumber())
 						.registNumber(res.getRegistNumber())
 						.tel(res.getTel())
-						.pictureUrl(res.getPictureUrl())
+						.pictureUrl(RANDOM_IMAGES.get(hotelRandomNumber))
 						.location(res.getLocation())
 						.latitude(res.getLatitude())
 						.longitude(res.getLongitude())
-						.ownHotelList(list)
+						.ownHotelList(list.stream().map(i -> {
+							int ownHotelRandomNumber = ThreadLocalRandom.current().nextInt(0, RANDOM_IMAGES.size() - 1);
+							i.setPictureList(List.of(RANDOM_IMAGES.get(ownHotelRandomNumber)));
+							return i;
+						}).toList())
 						.build();
 	}
 }

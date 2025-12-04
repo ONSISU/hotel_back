@@ -45,6 +45,10 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
 									        h.location AS location
 									    FROM Hotel h
 									    JOIN OwnHotel o ON o.hotel = h
+									    WHERE (
+									      :keyword IS NULL OR h.name LIKE CONCAT('%', :keyword, '%')
+									     OR h.location LIKE CONCAT('%', :keyword, '%'))
+									     AND (:type IS NULL OR h.hotelType = :type)
 									    GROUP BY 
 									        h.hotelId, 
 									        h.name, 
