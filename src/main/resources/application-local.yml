@@ -1,4 +1,6 @@
 spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
   application:
     name: project
   data:
@@ -51,6 +53,7 @@ spring:
             enable: true
 
 server:
+  shutdown: graceful
   port: 33000
   servlet:
     encoding:
