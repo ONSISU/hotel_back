@@ -1,8 +1,11 @@
 package com.example.hotel_back.user;
 
+import com.example.hotel_back.user.dto.UserRequestDTO;
+import com.example.hotel_back.user.dto.UserResponseDTO;
 import com.example.hotel_back.user.entity.ProfilePhoto;
 import com.example.hotel_back.user.entity.User;
 import com.example.hotel_back.user.repository.UserRepository;
+import com.example.hotel_back.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -19,87 +22,100 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class UserServiceTests {
 
-	@Autowired
-	private UserRepository userRepository;
+				@Autowired
+				private UserService userService;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+				@Autowired
+				private UserRepository userRepository;
 
-	int 테스트식별자 = LocalTime.now().getSecond();
+				@Autowired
+				private PasswordEncoder passwordEncoder;
 
-	@Test
-	public void insertUserTest() {
+				int 테스트식별자 = LocalTime.now().getSecond();
 
-		ProfilePhoto photo = ProfilePhoto.builder()
-						.photoName("Hello.png")
-						.photoUrl("/uploads/")
-						.build();
+				@Test
+				public void insertUserTest() {
 
-		User user = User.builder()
-						.email("kevin%s@naver.com".formatted(테스트식별자))
-						.phone("010907922%s".formatted(테스트식별자))
-						.fullName("LEEDONGHOON")
-						.password("1234")
-						.profilePhoto(photo)
-						.build();
+								ProfilePhoto photo = ProfilePhoto.builder()
+																.photoName("Hello.png")
+																.photoUrl("/uploads/")
+																.build();
 
-		User result = userRepository.save(user);
+								User user = User.builder()
+																.email("kevin%s@naver.com".formatted(테스트식별자))
+																.phone("010907922%s".formatted(테스트식별자))
+																.fullName("LEEDONGHOON")
+																.password("1234")
+																.profilePhoto(photo)
+																.build();
 
-		// ✅ AssertJ style
-		assertThat(result.getUserId()).isNotNull();  // DB inserted ID
-		//assertThat(result.getEmail()).isEqualTo("tom@naver.com");
-		assertThat(result.getProfilePhoto().getPhotoName()).isEqualTo("Hello.png");
-	}
+								User result = userRepository.save(user);
 
-	@Test
-	@Transactional
-	public void readPhotoNameTest() {
-		User user = userRepository.findById(1L).orElseThrow();
+								// ✅ AssertJ style
+								assertThat(result.getUserId()).isNotNull();  // DB inserted ID
+								assertThat(result.getProfilePhoto().getPhotoName()).isEqualTo("Hello.png");
+				}
 
-		String photoName = "Hello.png";
-		ProfilePhoto p = user.getProfilePhoto();
+				@Test
+				@Transactional
+				public void readPhotoNameTest() {
+								User user = userRepository.findById(1L).orElseThrow();
 
-		assertThat(p.getPhotoName().equals(photoName));
-	}
+								String photoName = "Hello.png";
+								ProfilePhoto p = user.getProfilePhoto();
 
-	@Test
-	public void joinUserTest() {
-		Map<String, Object> map = new HashMap<>();
+								assertThat(p.getPhotoName().equals(photoName));
+				}
+
+				@Test
+				public void joinUserTest() {
+								Map<String, Object> map = new HashMap<>();
 //        map.put("email", "동훈%s@naver.com".formatted(테스트식별자));
-		map.put("email", "bh@naver.com");
-		map.put("password", passwordEncoder.encode("1234"));
-		map.put("fullName", "남병현");
+								map.put("email", "test1213@naver.com");
+								map.put("password", passwordEncoder.encode("1234"));
+								map.put("fullName", "남병현");
 //		map.put("fullName", "남병현%s".formatted(테스트식별자));
-		map.put("phone", "010555555%s".formatted(테스트식별자));
+								map.put("phone", "010555555%s".formatted(테스트식별자));
 
-		ObjectMapper mapper = new ObjectMapper();
-		User user = mapper.convertValue(map, User.class);
+								ObjectMapper mapper = new ObjectMapper();
+								User user = mapper.convertValue(map, User.class);
 
-		User savedUser = userRepository.save(user);
+								User savedUser = userRepository.save(user);
 
-		assertThat(map.get("password").equals(savedUser.getPassword()));
-	}
+								assertThat(map.get("password").equals(savedUser.getPassword()));
+				}
 
-	@Test
-	public void loginTest() {
-		Map<String, Object> map = new HashMap<>();
-		map.put("email", "tom@naver.com");
-		map.put("password", "1234");
+				@Test
+				public void loginTest() {
+								String email = "test1213@naver.com";
+								String password = "1234";
 
-		ObjectMapper mapper = new ObjectMapper();
+								Map<String, Object> map = new HashMap<>();
+								map.put("email", email);
+								map.put("password", password);
 
-		User foundUser = userRepository
-						.findByEmail((String) map.get("email"))
-						.orElseThrow();
+								// ✅ Service로 확인하는 케이스(실제 구동할 때 사용하는 방법)
+								UserRequestDTO dto = UserRequestDTO.builder()
+																.email(email)
+																.password(password)
+																.build();
+								UserResponseDTO resultDTO = userService.login(dto);
+								System.out.println(">> " + resultDTO);
 
+								assertThat(resultDTO.getPhone().equals("01055555534"));
 
-		assertThat(foundUser.getPassword().equals((String) map.get("password")));
-	}
+								// ✅ Repository로 확인하는 케이스
+//		User foundUser = userRepository
+//						.findByEmail((String) map.get("email"))
+//						.orElseThrow();
+//		assertThat(foundUser.getPassword().equals((String) map.get("password")));
 
-	@Test
-	public void deleteTest() {
-		String userEmail = "tom@naver.com";
-		userRepository.deleteById(3L);
-	}
+				}
+
+				@Test
+				public void deleteTest() {
+								String userEmail = "tom@naver.com";
+								userRepository.deleteById(3L);
+				}
 }
 
