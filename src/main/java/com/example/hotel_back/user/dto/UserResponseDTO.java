@@ -12,22 +12,25 @@ import java.time.LocalDateTime;
 @Builder
 public class UserResponseDTO {
 
-    private Long userId;
+				private Long userId;
 
-    private int oauthId;
+				private int oauthId;
 
-    @NotBlank
-    @Email(message = "이메일 패턴이 아닙니다")
-    private String email;
+				@NotBlank
+				@Email(message = "이메일 패턴이 아닙니다")
+				private String email;
 
-    @NotBlank
-    @Size(max = 20)
-    private String fullName;
+				@NotBlank
+				@Size(max = 20)
+				private String fullName;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+				@Size(max = 20)
+				private String phone;
 
-    private String accessToken;
-    private String refreshToken;
+				private LocalDateTime createdAt;
+				private LocalDateTime updatedAt;
+
+				private String accessToken;
+				private String refreshToken;
 
 }

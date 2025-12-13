@@ -70,6 +70,7 @@ public class UserService {
 						.email(dto.getEmail())
 						.fullName(dto.getFullName())
 						.password(encodedPassword)
+						.phone(dto.getPhone())
 						.build();
 
 		userRepository.save(joinedUser);
@@ -116,6 +117,7 @@ public class UserService {
 						.userId(user.getUserId())
 						.oauthId(user.getOauthId())
 						.email(user.getEmail())
+						.phone(user.getPhone())
 						.fullName(user.getFullName())
 						.createdAt(user.getCreatedAt())
 						.updatedAt(user.getUpdatedAt())
