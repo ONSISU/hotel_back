@@ -1,5 +1,6 @@
 package com.example.hotel_back.reservation.service;
 
+import com.example.hotel_back.common.exception.reservation.OverReservationException;
 import com.example.hotel_back.hotel.entity.Hotel;
 import com.example.hotel_back.hotel.repository.HotelRepository;
 import com.example.hotel_back.ownhotel.entity.OwnHotel;
@@ -17,7 +18,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -37,10 +44,9 @@ public class ReservationService {
 				String reservedName = request.getReserveName();
 				String reservedPhone = request.getReservePhone();
 
+				// 로그인한 토큰으로부터의 이메일 가져오기
 				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 				String email = authentication.getName();
-
-				// 해당 일자에 이미 예약되었는지 확인
 
 				Hotel hotel = hotelRepository.findById(hotelId).orElseThrow();
 				OwnHotel ownHotel = ownHotelRepository.findByOwnHotelId(ownHotelId);
@@ -54,6 +60,53 @@ public class ReservationService {
 
 				LocalDate startDate = request.getStartDate();
 				LocalDate endDate = request.getEndDate();
+
+
+				// ✅ 해당 일자에 이미 예약되었는지 확인
+				List<Reservation> reservedList = reservationRepository.findAllByOwnHotelAndDate(ownHotel, startDate, endDate);
+				Integer 방개수 = ownHotel.getCountRoom();
+
+
+				/** [예약초과확인]
+					* 12.12 - 12.13 예약시 중간에 걸려있는 예약 정보 확인
+					* ex) 12.10 - 12.14 이런 케이스의 예약자들도 확인해야함
+					*/
+
+				if (방개수 <= reservedList.size()) {
+						List<LocalDate> fullDateList = new ArrayList<>();
+
+						for (Reservation r : reservedList) {
+								int nights = (int) ChronoUnit.DAYS.between(r.getStartDate(), r.getEndDate());
+								List<LocalDate> reservedDateList = IntStream.range(0, nights)
+																.mapToObj(r.getStartDate()::plusDays)
+																.toList();
+
+								fullDateList.addAll(reservedDateList);
+						}
+
+						// 날짜에 그룹핑하여 예약일자 체크
+						Map<LocalDate, Long> countMap =
+														fullDateList.stream()
+																						.collect(Collectors.groupingBy(date -> date, Collectors.counting()));
+
+						// 예약 max 값 확인
+						Long maxCount = countMap.values().stream()
+														.max(Long::compare)
+														.orElse(0L);
+
+						// 기간 내 초과예약 존재시 얼리리턴
+						if (maxCount >= 방개수) {
+								// [2025-12-11:3, 2025-12-13:1] 이런식의 entrySet
+								// 초과된 일자 첫번째것만 리턴
+								LocalDate overDate = countMap.entrySet()
+																.stream()
+																.filter(item -> item.getValue() >= 방개수)
+																.map(Map.Entry::getKey)
+																.findFirst().orElseThrow();
+
+								throw new OverReservationException(String.format("방개수 초과 - 초과된 일자: %s", overDate));
+						}
+				}
 
 				// 예약하기
 				Reservation reservation = Reservation.builder()
