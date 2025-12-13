@@ -13,10 +13,12 @@ import java.time.LocalDate;
 @Data
 public class ReserveRoomRequest {
 
-	// 호텔 예약시 요청
-	private Long userId;
-	private Long ownHotelId;
-	private LocalDate startDate;
-	private LocalDate endDate;
+		// 호텔 예약시 요청
+		private Long userId;
+		private Long ownHotelId;
+		private LocalDate startDate;
+		private LocalDate endDate;
+		private String reserveName;
+		private String reservePhone;
 
 }
