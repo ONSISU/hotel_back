@@ -61,6 +61,10 @@ server:
       force: true
       enabled: true
 
+  # 개발 시 trace 보기
+  error:
+    include-stacktrace: never #에러 로그 always, never
+    include-message: always
 
 jwt:
   secret: "jwtsecretkeyjwtsecretkeyjwtsecretkey12"
