@@ -23,52 +23,59 @@ import java.time.LocalDateTime;
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 public class Reservation {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reservation_id;
+		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		private Long reservation_id;
 
-    /*
-        @Column(columnDefinition = "TIMESTAMP") 대신 datTime으로
-        TimeStamp 는 2038년까지
-        미지정시 type은 dateTime. 9999년까지
-    */
-    private LocalDate startDate;
-    private LocalDate endDate;
+		/*
+						@Column(columnDefinition = "TIMESTAMP") 대신 datTime으로
+						TimeStamp 는 2038년까지
+						미지정시 type은 dateTime. 9999년까지
+		*/
+		private LocalDate startDate;
+		private LocalDate endDate;
 
-    @PrePersist
-    public void prePersist() {
-        if (this.startDate == null) {
-            this.startDate = LocalDate.now();
-        }
-        if (this.endDate == null) {
-            this.endDate = this.startDate.plusDays(1);
-        }
-    }
+		@PrePersist
+		public void prePersist() {
+				if (this.startDate == null) {
+						this.startDate = LocalDate.now();
+				}
+				if (this.endDate == null) {
+						this.endDate = this.startDate.plusDays(1);
+				}
+		}
 
-    // int 대신 Integer. Nullable 처리 가능하도록.
-    @Column(columnDefinition = "INT UNSIGNED COMMENT '숙박기간. 1이면 1박2일'")
-    @Builder.Default
-    private Integer duration = 1;
+		// int 대신 Integer. Nullable 처리 가능하도록.
+		@Column(columnDefinition = "INT UNSIGNED COMMENT '숙박기간. 1이면 1박2일'")
+		@Builder.Default
+		private Integer duration = 1;
 
-    @Column(columnDefinition = "INT UNSIGNED")
-    @Builder.Default
-    private Integer personCount = 1;
+		@Column(columnDefinition = "INT UNSIGNED")
+		@Builder.Default
+		private Integer personCount = 1;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
+		@CreatedDate
+		@Column(updatable = false)
+		private LocalDateTime createdAt;
 
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
+		@LastModifiedDate
+		private LocalDateTime updatedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "hotel_id")
-    private Hotel hotel;
+		@ManyToOne
+		@JoinColumn(name = "hotel_id")
+		private Hotel hotel;
 
-    @ManyToOne
-    @JoinColumn(name = "own_hotel_id")
-    private OwnHotel ownHotel;
+		@ManyToOne
+		@JoinColumn(name = "own_hotel_id")
+		private OwnHotel ownHotel;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+		@ManyToOne
+		@JoinColumn(name = "user_id")
+		private User user;
+
+		@Column(length = 11)
+		private String reservedPhone;
+
+		@Column(length = 20)
+		private String reservedName;
 }
