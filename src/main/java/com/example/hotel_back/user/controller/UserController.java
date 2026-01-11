@@ -56,13 +56,13 @@ public class UserController {
 						.path("/")
 						.maxAge(15 * 60)          // 15분
 						.sameSite("Lax")
-						.secure(true)
+						.secure(false) // 테스트용
 						.build();
 
 		ResponseCookie refreshToken = ResponseCookie.from("refreshToken", dto.getRefreshToken())
 						.path("/")
 						.httpOnly(true)           // 🔐 핵심
-						.secure(true)
+						.secure(false) // 테스트용
 						.sameSite("Lax")
 						.maxAge(7 * 24 * 60 * 60) // 7일
 						.build();
