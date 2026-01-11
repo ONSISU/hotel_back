@@ -55,15 +55,15 @@ public class UserController {
 		ResponseCookie accessToken = ResponseCookie.from("accessToken", dto.getAccessToken())
 						.path("/")
 						.maxAge(15 * 60)          // 15분
-						.sameSite("Lax")
-						.secure(false) // 테스트용
+						.sameSite("None")
+						.secure(true)
 						.build();
 
 		ResponseCookie refreshToken = ResponseCookie.from("refreshToken", dto.getRefreshToken())
 						.path("/")
 						.httpOnly(true)           // 🔐 핵심
-						.secure(false) // 테스트용
-						.sameSite("Lax")
+						.secure(true)
+						.sameSite("None")
 						.maxAge(7 * 24 * 60 * 60) // 7일
 						.build();
 
