@@ -1,9 +1,6 @@
 package com.example.hotel_back.user.service;
 
-import com.example.hotel_back.common.exception.user.DuplicationUserException;
-import com.example.hotel_back.common.exception.user.FailVerifiedEmailException;
-import com.example.hotel_back.common.exception.user.NoSuchMemberException;
-import com.example.hotel_back.common.exception.user.NotMatchPasswordException;
+import com.example.hotel_back.common.exception.user.*;
 import com.example.hotel_back.common.util.EmailUtil;
 import com.example.hotel_back.common.util.JwtUtil;
 import com.example.hotel_back.user.dto.UserRequestDTO;
@@ -11,9 +8,11 @@ import com.example.hotel_back.user.dto.UserResponseDTO;
 import com.example.hotel_back.user.dto.UserVerifyEmailDTO;
 import com.example.hotel_back.user.entity.User;
 import com.example.hotel_back.user.repository.UserRepository;
+import io.jsonwebtoken.Claims;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -149,6 +148,37 @@ public class UserService {
 						.fullName(joinedUser.getEmail())
 						.createdAt(joinedUser.getCreatedAt())
 						.updatedAt(joinedUser.getUpdatedAt())
+						.accessToken(accessToken)
+						.refreshToken(refreshToken)
+						.build();
+	}
+
+	public UserResponseDTO getUserInfo(String accessToken, String refreshToken) throws Exception {
+
+//		if (accessToken == null) {
+//			throw new NoAccessTokenException("aceessToken이 없습니다.");
+//		}
+
+		Boolean isValid = jwtUtil.validateToken(refreshToken);
+		if (!isValid) {
+			throw new NoAccessTokenException("토큰이 만료되었습니다.");
+		}
+
+		String email = jwtUtil.getSubject(refreshToken);
+
+		if (accessToken == null && isValid) {
+			// accessToken 다시 발급
+			accessToken = jwtUtil.createToken(email);
+		}
+
+		User user = userRepository.findByEmail(email).orElseThrow();
+		return UserResponseDTO.builder()
+						.userId(user.getUserId())
+						.phone(user.getPhone())
+						.fullName(user.getFullName())
+						.email(user.getEmail())
+						.updatedAt(user.getUpdatedAt())
+						.oauthId(user.getOauthId())
 						.accessToken(accessToken)
 						.refreshToken(refreshToken)
 						.build();

@@ -2,10 +2,7 @@ package com.example.hotel_back.common.exception;
 
 import com.example.hotel_back.common.exception.hotel.NoWithinMarkerRange;
 import com.example.hotel_back.common.exception.reservation.isNotValidTokenException;
-import com.example.hotel_back.common.exception.user.DuplicationUserException;
-import com.example.hotel_back.common.exception.user.FailVerifiedEmailException;
-import com.example.hotel_back.common.exception.user.NoSuchMemberException;
-import com.example.hotel_back.common.exception.user.NotMatchPasswordException;
+import com.example.hotel_back.common.exception.user.*;
 import com.example.hotel_back.common.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,6 +58,13 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(isNotValidTokenException.class)
 	public ResponseEntity<ApiResponse<Object>> handlerIsNotValidTokenException(Exception e) {
+		return ResponseEntity
+						.status(HttpStatus.BAD_REQUEST)
+						.body(ApiResponse.fail(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+	}
+
+	@ExceptionHandler(NoAccessTokenException.class)
+	public ResponseEntity<ApiResponse<Object>> handlerNoAccessTokenException(Exception e) {
 		return ResponseEntity
 						.status(HttpStatus.BAD_REQUEST)
 						.body(ApiResponse.fail(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
