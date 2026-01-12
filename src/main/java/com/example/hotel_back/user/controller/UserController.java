@@ -53,21 +53,23 @@ public class UserController {
 
 		// Cookie에 저장하기..
 		ResponseCookie accessToken = ResponseCookie.from("accessToken", dto.getAccessToken())
-						.path("/")
-						.maxAge(15 * 60)          // 15분
-						.sameSite("Lax")
+						.httpOnly(true)
 						.secure(false)
-						.domain(null)
+						.path("/")
+						.maxAge(15 * 60)
+						.sameSite("Lax")
+						// .domain() ← 이거 빼기!
 						.build();
 
 		ResponseCookie refreshToken = ResponseCookie.from("refreshToken", dto.getRefreshToken())
-						.path("/")
-						.httpOnly(true)           // 🔐 핵심
+						.httpOnly(true)
 						.secure(false)
-						.sameSite("Lax")
-						.domain(null)
+						.path("/")
 						.maxAge(7 * 24 * 60 * 60) // 7일
+						.sameSite("Lax")
+						// .domain() ← 이거 빼기!
 						.build();
+
 
 		response.addHeader(HttpHeaders.SET_COOKIE, accessToken.toString());
 		response.addHeader(HttpHeaders.SET_COOKIE, refreshToken.toString());
