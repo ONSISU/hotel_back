@@ -57,7 +57,7 @@ public class UserController {
 						.secure(false)
 						.path("/")
 						.maxAge(15 * 60)
-						.sameSite("Lax")
+						.sameSite("None")
 						// .domain() ← 이거 빼기!
 						.build();
 
@@ -66,7 +66,7 @@ public class UserController {
 						.secure(false)
 						.path("/")
 						.maxAge(7 * 24 * 60 * 60) // 7일
-						.sameSite("Lax")
+						.sameSite("None")
 						// .domain() ← 이거 빼기!
 						.build();
 
