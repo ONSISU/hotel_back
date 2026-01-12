@@ -23,8 +23,15 @@ public class UserController {
 	@PostMapping("/me")
 	public UserResponseDTO userMe(
 					@CookieValue(name = "accessToken", required = false) String accessToken,
-					@CookieValue(name = "refreshToken", required = false) String refreshToken
+					@CookieValue(name = "refreshToken", required = false) String refreshToken,
+					@RequestHeader("Authorization") String authorization
 	) throws Exception {
+
+
+		if (accessToken == null) {
+			accessToken = authorization;
+			refreshToken = authorization;
+		}
 
 		return userService.getUserInfo(accessToken, refreshToken);
 	}
