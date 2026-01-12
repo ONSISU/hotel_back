@@ -54,7 +54,7 @@ public class UserController {
 		// Cookie에 저장하기..
 		ResponseCookie accessToken = ResponseCookie.from("accessToken", dto.getAccessToken())
 						.httpOnly(true)
-						.secure(false)
+						.secure(true)
 						.path("/")
 						.maxAge(15 * 60)
 						.sameSite("None")
@@ -63,7 +63,7 @@ public class UserController {
 
 		ResponseCookie refreshToken = ResponseCookie.from("refreshToken", dto.getRefreshToken())
 						.httpOnly(true)
-						.secure(false)
+						.secure(true)
 						.path("/")
 						.maxAge(7 * 24 * 60 * 60) // 7일
 						.sameSite("None")
