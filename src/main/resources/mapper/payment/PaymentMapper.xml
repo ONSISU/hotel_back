@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.hotel_back.payment.mapper.PaymentMapper">
+
+    <!--결제하려는 호텔의 해당 날짜에 예약 존재여부-->
+    <select id="checkAvailablePayHotel"
+            parameterType="PaymentAvailableHotelRequest"
+            resultType="int">
+        SELECT COUNT(*)
+        FROM reservation r
+        WHERE r.start_date &lt; #{endDate}
+        AND r.end_date > #{startDate}
+        AND r.own_hotel_id = #{ownHotelId}
+    </select>
+
+
+</mapper>
