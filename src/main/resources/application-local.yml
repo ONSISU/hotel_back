@@ -68,3 +68,10 @@ server:
 
 jwt:
   secret: "jwtsecretkeyjwtsecretkeyjwtsecretkey12"
+
+
+logging:
+  level:
+    org.mybatis: DEBUG
+
+

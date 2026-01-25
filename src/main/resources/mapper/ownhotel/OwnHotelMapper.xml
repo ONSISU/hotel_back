@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.hotel_back.ownhotel.mapper.OwnHotelMapper">
+
+    <!--소유숙소 객실개수-->
+    <select id="getAvailableNumber"
+            parameterType="long"
+            resultType="int">
+        select count_room
+        from own_hotel
+        where own_hotel_id = #{value}
+    </select>
+
+
+</mapper>
