@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 @Data
+@Schema(description = "결제 숙소예약 가능여부 요청 DTO")
 public class PaymentAvailableHotelRequest {
 
 	@Schema(description = "소유호텔PK", example = "3")

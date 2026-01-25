@@ -7,6 +7,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
+@Schema(description = "결제 임시 저장 요청 DTO")
 public class PaymentTemp {
 
 	// 호텔 예약시 요청

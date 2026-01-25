@@ -9,9 +9,9 @@
             parameterType="PaymentAvailableHotelRequest"
             resultType="int">
         SELECT COUNT(*)
-        FROM RESERVATION r
-        WHERE r.start_date < #{endDate}
-        AND r.end_date  > #{startDate}
+        FROM reservation r
+        WHERE r.start_date &lt; #{endDate}
+        AND r.end_date > #{startDate}
         AND r.own_hotel_id = #{ownHotelId}
     </select>
 

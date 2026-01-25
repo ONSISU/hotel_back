@@ -19,18 +19,18 @@ public class PaymentRedisService {
 	private static final long TTL_MINUTES = 10;
 
 	public void save(PaymentTemp temp) {
-		String key = key(temp);
+//		String key = key(temp);
 
 		redisTemplate.opsForValue().set(
-						key,
+						temp.getPaymentTempId(),
 						write(temp),
 						TTL_MINUTES,
 						TimeUnit.MINUTES
 		);
 	}
 
-	public PaymentTemp get(PaymentTemp request) {
-		String json = redisTemplate.opsForValue().get(key(request));
+	public PaymentTemp get(String orderKey) {
+		String json = redisTemplate.opsForValue().get(orderKey);
 		return json == null ? null : read(json);
 	}
 

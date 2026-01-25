@@ -14,8 +14,4 @@ public class PaymentService {
 		return paymentMapper.checkAvailablePayHotel(request);
 	}
 
-	public int test() {
-		return paymentMapper.test();
-	}
-
 }
