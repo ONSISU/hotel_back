@@ -1,6 +1,7 @@
 package com.example.hotel_back.hotel.entity;
 
 
+import com.example.hotel_back.hotel_facility.entity.HotelFacility;
 import com.example.hotel_back.payment.entity.PaymentType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -66,8 +67,7 @@ public class Hotel {
 	@LastModifiedDate
 	private LocalDateTime updatedAt;
 
-	@OneToMany
-	@JoinColumn(name = "hotel_id")
-	private List<Facility> facility;
+	@OneToMany(mappedBy = "hotel")
+	private List<HotelFacility> facilities;
 
 }

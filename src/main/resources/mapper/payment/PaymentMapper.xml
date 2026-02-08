@@ -15,5 +15,20 @@
         AND r.own_hotel_id = #{ownHotelId}
     </select>
 
+    <!--결제하려는 호텔의 해당 날짜에 예약 존재여부-->
+    <select id="getPaymentList"
+            parameterType="string"
+            resultType="payment">
+
+        select * from payment
+        where reservation_id in
+        (
+        select reservation_id from reservation
+        where (
+        select user_id from user where email = #{email}
+        )
+        )
+
+    </select>
 
 </mapper>

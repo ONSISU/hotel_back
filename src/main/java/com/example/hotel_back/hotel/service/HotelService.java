@@ -3,6 +3,7 @@ package com.example.hotel_back.hotel.service;
 import com.example.hotel_back.hotel.dto.*;
 import com.example.hotel_back.hotel.entity.Hotel;
 import com.example.hotel_back.hotel.entity.HotelType;
+import com.example.hotel_back.hotel.mapper.HotelMapper;
 import com.example.hotel_back.hotel.repository.HotelRepository;
 import com.example.hotel_back.ownhotel.dto.OwnHotelDTO;
 import com.example.hotel_back.ownhotel.entity.OwnHotel;
@@ -25,6 +26,8 @@ public class HotelService {
 
 	private final HotelRepository hotelRepository;
 	private final OwnHotelRepository ownHotelRepository;
+	private final HotelMapper hotelMapper;
+
 	private static final List<String> RANDOM_IMAGES = List.of(
 					"/uploads/randomHotels/그랜드하얏트.jpg",
 					"/uploads/randomHotels/글래드여의도.jpg",
@@ -166,5 +169,9 @@ public class HotelService {
 							return i;
 						}).toList())
 						.build();
+	}
+
+	public List<Long> getOwnHotelIdList(Long hotelId) {
+		return hotelMapper.getOwnHotelIdList(hotelId);
 	}
 }

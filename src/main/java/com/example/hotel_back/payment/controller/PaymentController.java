@@ -1,11 +1,11 @@
 package com.example.hotel_back.payment.controller;
 
 import com.example.hotel_back.common.exception.reservation.OverBookReservation;
+import com.example.hotel_back.common.exception.user.NoAccessTokenException;
+import com.example.hotel_back.common.util.JwtUtil;
 import com.example.hotel_back.ownhotel.service.OwnHotelService;
-import com.example.hotel_back.payment.dto.PaymentAvailableHotelRequest;
-import com.example.hotel_back.payment.dto.PaymentTemp;
-import com.example.hotel_back.payment.dto.PaymentWithdrawalRequest;
-import com.example.hotel_back.payment.dto.TossConfirmResponse;
+import com.example.hotel_back.payment.dto.*;
+import com.example.hotel_back.payment.entity.Payment;
 import com.example.hotel_back.payment.service.PaymentRedisService;
 import com.example.hotel_back.payment.service.PaymentService;
 import com.example.hotel_back.reservation.dto.ReserveRoomRequest;
@@ -23,10 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 // ✅필) 결제흐름 문서 확인
 @Tag(name = "결제", description = "결제 관련 API")
@@ -39,6 +36,7 @@ public class PaymentController {
 	private final OwnHotelService ownHotelService;
 	private final ReservationService reservationService;
 	private final PaymentRedisService paymentRedisService;
+	private final JwtUtil jwtUtil;
 
 	@Operation(
 					summary = "[호텔결제] 1.호텔예약가능여부",
@@ -140,12 +138,45 @@ public class PaymentController {
 
 		ReservedRoom reservedRoom = reservationService.reserveHotel(reserveRoomRequest);
 
+
 		Map<String, Object> result = new HashMap<>();
 		result.put("isCompletedRservation", true);
 		result.put("reservedRoom", reservedRoom);
 
 
+		// payment, reservation 추가하기
+
+
 		return result;
+	}
+
+	// 멤버만 볼 수 있도록 검열 확인 필요
+	@GetMapping("/getPaymentDetail/{id}")
+	public Payment getPaymentDetail(@PathVariable Long id) {
+		return paymentService.getPaymentDetail(id);
+	}
+
+	@GetMapping("/payments")
+	public List<Payment> getPayments(
+					@CookieValue(name = "accessToken", required = false) String accessToken,
+					@CookieValue(name = "refreshToken", required = false) String refreshToken,
+					@RequestHeader("Authorization") String authorization
+	) {
+
+		if (accessToken == null && refreshToken == null && authorization == null) {
+			throw new NoAccessTokenException("토큰이 없습니다.");
+		}
+
+		String token = accessToken != null
+						? accessToken
+						: refreshToken != null
+						? refreshToken
+						: authorization;
+
+		String email = (String) jwtUtil.getClaims(token).get("sub");
+
+		return paymentService.getPaymentList(email);
+
 	}
 
 }
