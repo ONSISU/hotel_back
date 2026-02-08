@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.hotel_back.reservation.mapper.ReservationMapper">
+
+    <select id="getAvailableRooms"
+            parameterType="AvailableRoomRequest"
+            resultType="OwnHotelDTO">
+        SELECT
+        h.own_hotel_id,
+        h.count_room AS total_room,
+        (
+        SELECT COUNT(*)
+        FROM reservation r
+        WHERE r.own_hotel_id = h.own_hotel_id
+        AND r.start_date &lt;= #{startDate}
+        AND r.end_date &gt;= #{endDate}
+        ) AS reserved_room
+        FROM own_hotel h
+        WHERE h.own_hotel_id IN
+
+        <foreach collection="ownHotelIdList"
+                 item="id"
+                 open="("
+                 close=")"
+                 separator=",">
+            #{id}
+        </foreach>
+
+        HAVING total_room > reserved_room;
+    </select>
+
+
+</mapper>

@@ -1,6 +1,7 @@
 package com.example.hotel_back.payment.entity;
 
 import com.example.hotel_back.reservation.entity.Reservation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,28 +21,30 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class Payment {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long paymentId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long paymentId;
 
-    @Column(columnDefinition = "INT UNSIGNED")
-    private Integer total;
+	@Column(columnDefinition = "INT UNSIGNED")
+	private Integer total;
 
-    @Column(columnDefinition = "INT UNSIGNED")
-    private Integer paid;
+	@Column(columnDefinition = "INT UNSIGNED")
+	private Integer paid;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
+	@CreatedDate
+	@Column(updatable = false)
+	private LocalDateTime createdAt;
 
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
+	@LastModifiedDate
+	private LocalDateTime updatedAt;
 
-    @OneToOne
-    @JoinColumn(name = "reservation_id")
-    private Reservation reservation;
+	@OneToOne
+	@JoinColumn(name = "reservation_id")
+	@JsonIgnore
+	private Reservation reservation;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private PaymentType paymentType;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private PaymentType paymentType;
 
 }

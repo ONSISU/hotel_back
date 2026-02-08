@@ -11,13 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReservedRoom {
 
-		private Long roomId;
-		private Long hotelId;
-		private String hotelName;
-		private String location;
-		private Double latitude;
-		private Double longitude;
-		private String reserveName;
-		private String reservePhone;
+	private Long roomId;
+	private Long hotelId;
+	private String hotelName;
+	private String location;
+	private Double latitude;
+	private Double longitude;
+	private String reserveName;
+	private String reservePhone;
+	private Long paymentId;
 
 }
