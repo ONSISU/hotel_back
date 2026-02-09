@@ -12,6 +12,7 @@ import com.example.hotel_back.reservation.dto.ReserveRoomRequest;
 import com.example.hotel_back.reservation.dto.ReservedRoom;
 import com.example.hotel_back.reservation.service.ReservationService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -151,11 +152,25 @@ public class PaymentController {
 	}
 
 	// 멤버만 볼 수 있도록 검열 확인 필요
+	@Operation(
+					summary = "결제상세 조회",
+					description = "결제상세 조회"
+	)
 	@GetMapping("/getPaymentDetail/{id}")
-	public Payment getPaymentDetail(@PathVariable Long id) {
+	public Payment getPaymentDetail(
+					@PathVariable
+					@Schema(
+									description = "결제 후 응답값에 내려오는 결제키"
+					)
+					Long id
+	) {
 		return paymentService.getPaymentDetail(id);
 	}
 
+	@Operation(
+					summary = "결제내역 조회",
+					description = "결제내역 조회(쿠키토큰으로 조회, 로그인 하면 파라미터 필요없음)"
+	)
 	@GetMapping("/payments")
 	public List<Payment> getPayments(
 					@CookieValue(name = "accessToken", required = false) String accessToken,
