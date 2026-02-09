@@ -8,6 +8,7 @@ import com.example.hotel_back.reservation.dto.AvailableRoomRequest;
 import com.example.hotel_back.reservation.dto.ReserveRoomRequest;
 import com.example.hotel_back.reservation.dto.ReservedRoom;
 import com.example.hotel_back.reservation.service.ReservationService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,6 +38,10 @@ public class ReservationController {
 		return reservationService.getReservedRooms(email);
 	}
 
+	@Operation(
+					summary = "예약 가능한 소유숙소 조회",
+					description = "예약 가능한 소유숙소 조회"
+	)
 	@PostMapping("/getAvailableRooms")
 	public List<OwnHotelDTO> getAvailableRooms(@RequestBody AvailableRoomRequest request) {
 		Long hotelId = request.getHotelId();
