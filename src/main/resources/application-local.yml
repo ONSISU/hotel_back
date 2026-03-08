@@ -79,8 +79,10 @@ mybatis:
     aggressive-lazy-loading: false
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+
 logging:
   level:
-    org.mybatis: DEBUG
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
 
 
