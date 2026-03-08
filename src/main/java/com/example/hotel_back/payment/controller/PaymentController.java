@@ -182,11 +182,16 @@ public class PaymentController {
 			throw new NoAccessTokenException("토큰이 없습니다.");
 		}
 
+		if (authorization != null && authorization.startsWith("Bearer ")) {
+			authorization = authorization.replace("Bearer ", "");
+		}
+
 		String token = accessToken != null
 						? accessToken
 						: refreshToken != null
 						? refreshToken
 						: authorization;
+
 
 		String email = (String) jwtUtil.getClaims(token).get("sub");
 

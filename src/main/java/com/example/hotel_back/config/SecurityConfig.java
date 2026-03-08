@@ -22,54 +22,54 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-		@Autowired
-		private JwtAuthenticationFilter jwtAuthenticationFilter;
+	@Autowired
+	private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-		@Bean
-		public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 
-				http
-												.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-												.csrf(csrf -> csrf.disable())
-												.authorizeHttpRequests(auth ->
-																				auth
-																												.requestMatchers("/uploads/**").permitAll() // Allow access to images
-																												.requestMatchers("/api/v1/*").permitAll()
-																												/*.requestMatchers("/api/v1/admin/**").hasRole("ADMIN")*/
-																												.anyRequest().permitAll()
-												)
-												.formLogin(login -> login.disable())
-												.httpBasic(basic -> basic.disable()) // JWT사용하기 때문에 Basic 암호화 비활성화.
-												.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		http
+						.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+						.csrf(csrf -> csrf.disable())
+						.authorizeHttpRequests(auth ->
+										auth
+														.requestMatchers("/uploads/**").permitAll() // Allow access to images
+														.requestMatchers("/api/v1/*").permitAll()
+														/*.requestMatchers("/api/v1/admin/**").hasRole("ADMIN")*/
+														.anyRequest().permitAll()
+						)
+						.formLogin(login -> login.disable())
+						.httpBasic(basic -> basic.disable()) // JWT사용하기 때문에 Basic 암호화 비활성화.
+						.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-				return http.build();
+		return http.build();
 
-		}
+	}
 
-		@Bean
-		public PasswordEncoder passwordEncoder() {
-				return new BCryptPasswordEncoder();
-		}
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-		@Bean
-		public CorsConfigurationSource corsConfigurationSource() {
-				CorsConfiguration config = new CorsConfiguration();
-				config.setAllowedOriginPatterns(List.of("http://localhost:3000"));
-				config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-				config.setAllowedHeaders(List.of("*"));
-				config.setAllowCredentials(true);
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowedOriginPatterns(List.of("*"));
+		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+		config.setAllowedHeaders(List.of("*"));
+		config.setAllowCredentials(true);
 
-				UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-				source.registerCorsConfiguration("/**", config);
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", config);
 
-				return source;
-		}
+		return source;
+	}
 
-		// AuthenticationManager Bean 추가
-		@Bean
-		public AuthenticationManager authenticationManager(
-										AuthenticationConfiguration authenticationConfiguration) throws Exception {
-				return authenticationConfiguration.getAuthenticationManager();
-		}
+	// AuthenticationManager Bean 추가
+	@Bean
+	public AuthenticationManager authenticationManager(
+					AuthenticationConfiguration authenticationConfiguration) throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 }

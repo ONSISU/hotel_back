@@ -18,7 +18,7 @@
     <!--결제하려는 호텔의 해당 날짜에 예약 존재여부-->
     <select id="getPaymentList"
             parameterType="string"
-            resultType="payment">
+            resultType="com.example.hotel_back.payment.entity.Payment">
 
         select * from payment
         where reservation_id in
